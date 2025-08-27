@@ -1,0 +1,26 @@
+{% load django_htmx %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <link rel="icon" type="image/png" href="{% static 'image/adope_logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bitcoin.css' %}">
+    <title>Bitcoin Payment</title>
+    {% htmx_script %}
+</head>
+<body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
+    
+    {% block content %}
+    
+    {% endblock content %}
+        
+    {% block script %}
+      
+    {% endblock script %}
+</body>
+</html>

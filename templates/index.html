@@ -1,0 +1,481 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="homepage">
+    <div class="start mx-auto md:max-w-7xl px-8 py-8">
+      <!--  -->
+
+      <!-- Desktop Header -->
+      <div class="header hidden md:flex justify-between items-center relative">
+        <div class="logo">
+          <span class="flex items-center justify-center space-x-3">
+            <img src="{% static 'image/adope_logo.png' %}" class="w-[40px]" alt="" />
+            <h5 class="uppercase font-semibold text-md">Bitcoin Mining</h5>
+          </span>
+        </div>
+        <div class="navbar">
+          <ul class="flex space-x-3 text-xs font-semibold">
+            <li>News</li>
+            <li><button id="openModalBtn">Settings</button></li>
+          </ul>
+        </div>
+        <div class="navbar2">
+          <span
+            class="flex space-x-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 text-sm font-semibold text-sm border-2 border-green-300 px-4 py-1 rounded-full"
+          >
+            <p>$567987</p>
+            <h1 class="text-green-300"><i class="fa-solid fa-wallet"></i></h1>
+          </span>
+        </div>
+      </div>
+
+      <!-- Mobile Header -->
+      <div
+        class="header md:hidden flex justify-between items-center z-50 relative"
+      >
+        <div class="logo">
+          <span class="flex items-center justify-center space-x-3">
+            <img src="{% static 'image/adope_logo.png' %}" class="w-[40px]" alt="" />
+            <h5 class="uppercase font-semibold text-md">Bitcoin Mining</h5>
+          </span>
+        </div>
+
+        <button id="menuButton" class="md:hidden text-black p-2">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobileMenu"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 pt-16"
+      >
+        <div class="bg-white w-full h-full p-4">
+          <ul class="flex flex-col space-y-4 text-sm font-semibold">
+            <li>News</li>
+            <li>
+              <button id="mobileOpenModalBtn" class="w-full text-left">
+                Settings
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- middle man -->
+      <div
+        id="loadingSection"
+        class="w-full mt-12 h-auto rounded-lg border border-gray-200"
+      >
+        <div class="bg-white flex justify-center p-3 md:p-12 plus-pattern">
+          <div class="text-center space-y-4">
+            <div class="flex justify-center items-center text-center">
+              <img
+                src="{% static 'image/loading_coin_adobe.png' %}"
+                class="w-[50%] h-auto"
+                alt=""
+              />
+            </div>
+            <h1 class="text-red-500 font-bold text-lg text-center">
+              Please hold on and don't close the page!
+            </h1>
+            <h1 id="statusLine1" class="text-green-400 font-bold text-xl">
+              Converting BTC to USD...
+            </h1>
+            <h1
+              id="statusLine2"
+              class="text-green-400 font-bold text-xl hidden"
+            >
+              Funds are being transferred to a cryptocurrency exchange
+            </h1>
+            <h1 class="text-xl">Estimated time of Completion:</h1>
+            <h1 class="text-xl">
+              <span id="countdown" class="text-red-400">10</span> Seconds...
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="resultSection"
+        class="w-full mt-12 h-auto rounded-lg border border-gray-200 hidden"
+      >
+        <div class="bg-white flex justify-center p-3 md:p-12 plus-pattern">
+          <div class="max-w-sm md:max-w-xl space-y-4">
+            <div class="text-center space-y-3">
+              <p class="text-green-500 font-semibold">Your payout amount is:</p>
+              <h1 class="text-md md:text-4xl font-bold">
+                $30208.50 <span class="text-[#6b7280]">USD</span>
+              </h1>
+              <p class="text-md text-[#6b7280]">
+                Withdrawal must be made within 24 hours!
+              </p>
+              <h1 class="font-bold text-2xl">
+                Submit a request to exchange your BTC to USD
+              </h1>
+            </div>
+            <div class="space-y-4 text-lg font-normal">
+              <p class="text-[#6b7280]">
+                Your bitcoins are now on
+                <span class="text-[#000]">Binance</span> exchange.
+              </p>
+              <p class="text-[#6b7280]">
+                The current balance is
+                <span class="text-[#000]">1.342600</span> BTC.
+              </p>
+              <p class="text-[#6b7280]">
+                To access your funds in <span class="text-[#000]">USD</span>,
+                proceed with the cryptocurrency exchange. Binance charges a fee
+                of <span class="text-[#000]">0.12%</span>.
+              </p>
+              <p class="text-[#6b7280]">
+                The conversion cost will be <span class="text-[#000]">$64</span>
+              </p>
+            </div>
+            <div class="flex justify-center items-center">
+              <div class="space-y-4">
+                <h1 class="text-green-700 font-bold text-3xl">
+                  1.342600 <span class="text-[#6b7280]">BTC</span>
+                </h1>
+                <img src="{% static 'image/withdraw.png' %}" class="w-full" alt="" />
+                <h1 class="text-green-700 font-bold text-3xl">
+                  $30208.50 <span class="text-[#6b7280]">USD</span>
+                </h1>
+              </div>
+            </div>
+            <div class="text-sm text-[#6b7280] font-medium">
+              <span class="flex gap-2 items-center">
+                <p class="text-green-500 text-lg">
+                  <i class="fa-regular fa-circle-check"></i>
+                </p>
+                <p>
+                  Click the
+                  <span class="text-[#374151]">"Exchange Bitcoin"</span> button.
+                </p>
+              </span>
+              <span class="flex gap-2 items-center">
+                <p class="text-green-500 text-lg">
+                  <i class="fa-regular fa-circle-check"></i>
+                </p>
+                <p>
+                  Pay the Binance exchange fee of
+                  <span class="text-[#374151]">0.12%</span>.
+                </p>
+              </span>
+              <span class="flex gap-2 items-center">
+                <p class="text-green-500 text-lg">
+                  <i class="fa-regular fa-circle-check"></i>
+                </p>
+                <p>
+                  Receive <span class="text-[#374151]">$30208.50</span> after
+                  conversion, equivalent to
+                  <span class="text-[#374151]">1.342600 BTC.</span>
+                </p>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#f9fafb] py-12 px-12 flex justify-center items-center">
+          <a href="{% url 'bitcoin' %}">
+          <!-- <a href="/bitcoin_.html"> -->
+            <button type="button" class="pulse-button">
+              <span><i class="fas fa-bolt"></i></span>
+              Exchange Bitcoin
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <!-- another guy -->
+      <!-- end -->
+    </div>
+    {% if profile %}
+      <div class="fixed bottom-6 right-6 group">
+        <a href="{% url 'client_chat' %}" 
+          class="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition">
+            <i class="fas fa-comment-alt text-2xl"></i>
+        </a>
+        <!-- Tooltip -->
+        <div class="absolute right-16 bottom-1/2 transform translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white text-sm rounded px-3 py-1 shadow-lg">
+            Chat
+        </div>
+      </div>
+    {% endif %}
+    <div class="footer bg-[#f9fafb] text-[#64748b] px-8 py-12">
+      <div
+        class="flex justify-center items-center gap-2 py-2 border-b border-gray-200"
+      >
+        <img src="{% static 'image/adope_logo.png' %}" class="w-12 h-auto" alt="" />
+        <h1 class="uppercase text-sm">Bitcoin Mining</h1>
+      </div>
+      <div
+        class="py-3 md:py-5 md:text-xs flex flex-col-reverse md:flex-row justify-between md:items-center gap-5 md:gap-0"
+      >
+        <div class="">
+          <p>Copyright © 2025 Bitcoin Mining.</p>
+        </div>
+        <div class="">
+          <ul
+            class="flex justify-between md:justify-center md:items-center gap-2 text-md md:text-sm"
+          >
+            <li><i class="fa-brands fa-facebook"></i> <span>120.8k</span></li>
+            <li><i class="fa-brands fa-instagram"></i> <span>67.3k</span></li>
+            <li><i class="fa-brands fa-twitter"></i> <span>30.1k</span></li>
+            <li><i class="fa-brands fa-youtube"></i> <span>22.4k</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+
+    <!-- Your modal with working tabs -->
+    <div
+      id="settingsModal"
+      class="fixed inset-0 flex items-center justify-center bg-black/50 p-3 hidden z-10"
+    >
+      <!-- Modal content -->
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg z-50 p-3">
+        <!-- Header -->
+        <div class="px-4">
+          <div class="flex justify-between items-center">
+            <h5 class="text-sm md:text-2xl font-semibold">Settings</h5>
+            <button
+              id="closeModalBtn"
+              class="text-gray-500 hover:text-gray-700 text-xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          <p class="text-sm font-semibold text-neutral-500">
+            Here you can change your settings.
+          </p>
+        </div>
+
+        <!-- Body with Tabs -->
+        <div class="p-4">
+          <div
+            class="flex justify-between items-center border-t border-b border-gray-200 py-4 text-sm"
+          >
+            <button type="button" class="tab-button active" data-tab="general">
+              General
+            </button>
+            <button type="button" class="tab-button" data-tab="password">
+              Password
+            </button>
+            <button type="button" class="tab-button" data-tab="notifications">
+              Notifications
+            </button>
+            <button type="button" class="tab-button" data-tab="subscriptions">
+              Subscriptions
+            </button>
+          </div>
+
+          <div class="tab-content general active">
+            <div class="space-y-3">
+              <div>
+                <h4 class="text-md font-semibold capitalize">Account</h4>
+                <p class="text-gray-400 text-xs">
+                  Manage your account settings and set your preferences.
+                </p>
+              </div>
+              <div
+                class="flex justify-between border-t py-2 border-gray-200 gap-6"
+              >
+                <div>
+                  <p class="text-gray-400 text-xs">
+                    Auto collect bitcoin bonuses
+                  </p>
+                </div>
+                <div>
+                  <p class="text-xs">Collects bitcoins every 7 days</p>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                  <p>Enable</p>
+                  |
+                  <div class="relative inline-flex items-center h-6">
+                    <input
+                      type="checkbox"
+                      id="switchCheckChecked"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:bg-[#2dac5c] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content password">
+            <div class="py-4">
+              <h4 class="text-md font-semibold">Password Settings</h4>
+              <p class="text-gray-400 text-xs mb-4">
+                Manage your account password.
+              </p>
+              <!-- Password Form -->
+               
+              
+              
+              <form id="passwordForm" 
+                  hx-post="{% url 'index' %}" 
+                  hx-trigger="submit" 
+                  hx-target="#homepage" 
+                  hx-swap="outerHTML">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="password">
+                <input type="hidden" name="profile_id" id="profile_id" value="{{ profile.id|default:'' }}">
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="currentPassword"
+                    class="text-gray-500 font-semibold"
+                    >Current password</label
+                  >
+                  <input
+                    type="password"
+                     name="currentPassword" 
+                     id="currentPassword"
+                     class="p-1 border border-gray-200 outline outline-gray-200"
+                     value="{{ profile.curr_password }}"
+                     />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-6 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label for="newPassword" class="text-gray-500 font-semibold"
+                    >New password</label
+                  >
+                  <input
+                    type="password"
+                    name="newPassword" 
+                    id="newPassword"
+                    class="p-1 border border-gray-200 outline outline-gray-200"
+                    value="{{ profile.new_password }}"
+                    />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 pt-4"
+                >
+                  <button
+                    class="bg-green-100 hover:bg-green-200 text-base focus:outline-none text-green-700 rounded-md border border-transparent px-6 py-3"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="tab-content notifications">
+            <div class="py-2">
+              <h4 class="text-md font-semibold">Notifications</h4>
+              <p class="text-gray-400 text-xs mb-3">
+                Manage your account notifications.
+              </p>
+              <!-- Notification settings would go here -->
+              <div
+                class="flex justify-between border-t py-3 border-gray-200 gap-6"
+              >
+                <div>
+                  <p class="text-gray-400 text-xs">Transfer</p>
+                </div>
+                <div>
+                  <p class="text-xs">
+                    Enable transfer from other <br />
+                    users
+                  </p>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                  <p>Enable</p>
+                  |
+                  <div class="relative inline-flex items-center h-6">
+                    <input
+                      type="checkbox"
+                      id="switchCheckChecked"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:bg-[#2dac5c] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content subscriptions">
+            <div class="py-4">
+              <h4 class="text-md font-semibold">Subscription Management</h4>
+              <p class="text-gray-400 text-xs mb-3">
+                Manage your account subscription.
+              </p>
+              <!-- Subscription Form -->
+              <form id="subscriptionForm" 
+                hx-post="{% url 'index' %}" 
+                hx-trigger="submit" 
+                hx-target="#homepage" 
+                hx-swap="outerHTML">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="subscription">
+                <input type="hidden" name="profile_id" id="profile_id" value="{{ profile.id|default:'' }}">
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="subscriberName"
+                    class="text-gray-500 font-semibold"
+                    >Your Name</label
+                  >
+                  <input
+                  value="{{ profile.fullName }}"
+                    type="text"
+                    name="subscriberName" 
+                    id="subscriberName"
+                    class="p-1 border border-gray-200 outline outline-gray-200"
+                  />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-2 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="subscriberEmail"
+                    class="text-gray-500 font-semibold"
+                    >Your Email</label
+                  >
+                  <input
+                  value="{{ profile.email }}"
+                    type="email"
+                    name="subscriberEmail" 
+                    id="subscriberEmail"
+                    class="p-1 border border-gray-200 outline outline-gray-200"
+                  />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 pt-4"
+                >
+                  <button
+                    class="bg-green-100 hover:bg-green-200 text-base focus:outline-none text-green-700 rounded-md border border-transparent px-6 py-3"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="static-data" data-logo-url="{% static 'image/adope_logo.png' %}"></div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'js/bitcoin.js' %}"></script>
+{% endblock script %}

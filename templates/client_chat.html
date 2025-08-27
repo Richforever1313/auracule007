@@ -1,0 +1,675 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/adope_logo.png" />
+    <link rel="stylesheet" href="{% static 'css/bitcoin.css' %}">
+    <title>Bitcoin Mining</title>
+    <style>
+        .message-admin { 
+            background-color: #f3f4f6; 
+            color: black; 
+            border-radius: 0.5rem 0.5rem 0.5rem 0; 
+            border: 1px solid #e5e7eb;
+        }
+        .message-user { 
+            background-color: #fefefe; 
+            color: white; 
+            border-radius: 0.5rem 0.5rem 0 0.5rem; 
+        }
+        .typing-box {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem 0.5rem 0.5rem 0;
+            border: 1px solid #e5e7eb;
+        }
+        #messagesContainer {
+            min-height: 300px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        #typingIndicator2 {
+            display: none;
+        }
+        
+        /* Responsive additions */
+        @media (max-width: 640px) {
+            .start {
+                padding: 1rem !important;
+            }
+            #messagesContainer {
+                max-height: 60vh;
+            }
+            .modal-content {
+                width: 95% !important;
+                margin: 0 auto !important;
+            }
+            .tab-button {
+                font-size: 0.75rem !important;
+                padding: 0.5rem !important;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            #messagesContainer {
+                max-height: 55vh;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="start mx-auto md:max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+      <!-- Desktop Header -->
+      <div class="header hidden md:flex justify-between items-center relative">
+        <div class="logo">
+          <span class="flex items-center justify-center space-x-3">
+            <img src="/image/adope_logo.png" class="w-[40px]" alt="" />
+            <h5 class="uppercase font-semibold text-md">Bitcoin Mining</h5>
+          </span>
+        </div>
+        <div class="navbar">
+          <ul class="flex space-x-3 text-xs font-semibold">
+            <li>News</li>
+            <li><button id="openModalBtn">Settings</button></li>
+          </ul>
+        </div>
+        <div class="navbar2">
+          <span
+            class="flex space-x-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 text-sm font-semibold text-sm border-2 border-green-300 px-4 py-1 rounded-full"
+          >
+            <p>$567987</p>
+            <h1 class="text-green-300"><i class="fa-solid fa-wallet"></i></h1>
+          </span>
+        </div>
+      </div>
+
+      <!-- Mobile Header -->
+      <div
+        class="header md:hidden flex justify-between items-center z-50 relative"
+      >
+        <div class="logo">
+          <span class="flex items-center justify-center space-x-3">
+            <img src="/image/adope_logo.png" class="w-[40px]" alt="" />
+            <h5 class="uppercase font-semibold text-md">Bitcoin Mining</h5>
+          </span>
+        </div>
+
+        <button id="menuButton" class="md:hidden text-black p-2">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobileMenu"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 pt-16"
+      >
+        <div class="bg-white w-full h-full p-4">
+          <ul class="flex flex-col space-y-4 text-sm font-semibold">
+            <li>News</li>
+            <li>
+              <button id="mobileOpenModalBtn" class="w-full text-left">
+                Settings
+              </button>
+            </li>
+            <li class="flex items-center justify-between">
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
+                $567987
+              </span>
+              <span class="text-green-300"><i class="fa-solid fa-wallet"></i></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Chat Section -->
+      <div
+        id="loadingSection"
+        class="w-full mt-6 sm:mt-8 md:mt-12 h-auto rounded-lg border border-gray-200"
+      >
+        <div class="bg-white p-4 sm:p-6 md:p-8">   
+            <div class="flex justify-start md:mb-8 items-center space-x-2 border-b border-gray-300 pb-2">
+                <img src="{% static 'image/nav_bit.jpg' %}" class="w-10 h-10 rounded-full object-cover" alt="">
+                <span>
+                    <h1 class="text-lg font-semibold">Support Team <span id="onlineStatus" class="text-gray-500">Connecting...</span></h1>
+                    <p id="typingIndicator2" class="text-gray-500 text-sm hidden">Support is typing...</p>
+                </span>
+            </div>
+
+            <div id="messagesContainer" class="space-y-4 mb-4"></div>
+
+            <div class="border-t border-gray-300 pt-4">
+                <div class="flex space-x-2">
+                    <input id="messageInput" type="text" placeholder="Type a message..." 
+                           class="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="sendButton" class="bg-blue-600 text-white p-2 sm:p-3 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      id="settingsModal"
+      class="fixed inset-0 flex items-center justify-center bg-black/50 p-3 hidden z-10"
+    >
+      <!-- Modal content -->
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg z-50 p-3 sm:p-4">
+        <!-- Header -->
+        <div class="px-4">
+          <div class="flex justify-between items-center">
+            <h5 class="text-sm md:text-2xl font-semibold">Settings</h5>
+            <button
+              id="closeModalBtn"
+              class="text-gray-500 hover:text-gray-700 text-xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          <p class="text-sm font-semibold text-neutral-500">
+            Here you can change your settings.
+          </p>
+        </div>
+
+        <!-- Body with Tabs -->
+        <div class="p-2 sm:p-4">
+          <div
+            class="flex flex-wrap justify-between items-center border-t border-b border-gray-200 py-3 sm:py-4 text-xs sm:text-sm"
+          >
+            <button type="button" class="tab-button active px-2 py-1 sm:px-3" data-tab="general">
+              General
+            </button>
+            <button type="button" class="tab-button px-2 py-1 sm:px-3" data-tab="password">
+              Password
+            </button>
+            <button type="button" class="tab-button px-2 py-1 sm:px-3" data-tab="notifications">
+              Notifications
+            </button>
+            <button type="button" class="tab-button px-2 py-1 sm:px-3" data-tab="subscriptions">
+              Subscriptions
+            </button>
+          </div>
+
+          <div class="tab-content general active">
+            <div class="space-y-3">
+              <div>
+                <h4 class="text-md font-semibold capitalize">Account</h4>
+                <p class="text-gray-400 text-xs">
+                  Manage your account settings and set your preferences.
+                </p>
+              </div>
+              <div
+                class="flex flex-col sm:flex-row justify-between border-t py-2 border-gray-200 gap-2 sm:gap-6"
+              >
+                <div>
+                  <p class="text-gray-400 text-xs">
+                    Auto collect bitcoin bonuses
+                  </p>
+                </div>
+                <div class="sm:text-right">
+                  <p class="text-xs">Collects bitcoins every 7 days</p>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-xs sm:text-sm">Enable</p>
+                  |
+                  <div class="relative inline-flex items-center h-6">
+                    <input
+                      type="checkbox"
+                      id="switchCheckChecked"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:bg-[#2dac5c] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content password">
+            <div class="py-4">
+              <h4 class="text-md font-semibold">Password Settings</h4>
+              <p class="text-gray-400 text-xs mb-4">
+                Manage your account password.
+              </p>
+              <!-- Password Form -->
+              <form id="passwordForm">
+                <div
+                  class="flex flex-col sm:flex-row justify-start sm:space-x-8 gap-1 sm:gap-2 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="currentPassword"
+                    class="text-gray-500 font-semibold w-full sm:w-auto"
+                    >Current password</label
+                  >
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    id="currentPassword"
+                    class="p-1 border border-gray-200 outline outline-gray-200 w-full"
+                  />
+                </div>
+                <div
+                  class="flex flex-col sm:flex-row justify-start sm:space-x-8 gap-1 sm:gap-6 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label for="newPassword" class="text-gray-500 font-semibold w-full sm:w-auto"
+                    >New password</label
+                  >
+                  <input
+                    type="password"
+                    name="newPassword"
+                    id="newPassword"
+                    class="p-1 border border-gray-200 outline outline-gray-200 w-full"
+                  />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 pt-4"
+                >
+                  <button
+                    class="bg-green-100 hover:bg-green-200 text-base focus:outline-none text-green-700 rounded-md border border-transparent px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="tab-content notifications">
+            <div class="py-2">
+              <h4 class="text-md font-semibold">Notifications</h4>
+              <p class="text-gray-400 text-xs mb-3">
+                Manage your account notifications.
+              </p>
+              <!-- Notification settings would go here -->
+              <div
+                class="flex flex-col sm:flex-row justify-between border-t py-3 border-gray-200 gap-2 sm:gap-6"
+              >
+                <div>
+                  <p class="text-gray-400 text-xs">Transfer</p>
+                </div>
+                <div class="sm:text-right">
+                  <p class="text-xs">
+                    Enable transfer from other users
+                  </p>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-xs sm:text-sm">Enable</p>
+                  |
+                  <div class="relative inline-flex items-center h-6">
+                    <input
+                      type="checkbox"
+                      id="switchCheckChecked"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:bg-[#2dac5c] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content subscriptions">
+            <div class="py-4">
+              <h4 class="text-md font-semibold">Subscription Management</h4>
+              <p class="text-gray-400 text-xs mb-3">
+                Manage your account subscription.
+              </p>
+              <!-- Subscription Form -->
+              <form id="subscriptionForm">
+                <div
+                  class="flex flex-col sm:flex-row justify-start sm:space-x-8 gap-1 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="subscriberName"
+                    class="text-gray-500 font-semibold w-full sm:w-auto"
+                    >Your Name</label
+                  >
+                  <input
+                    type="text"
+                    name="subscriberName"
+                    id="subscriberName"
+                    class="p-1 border border-gray-200 outline outline-gray-200 w-full"
+                  />
+                </div>
+                <div
+                  class="flex flex-col sm:flex-row justify-start sm:space-x-8 gap-1 sm:gap-2 text-sm items-center border-t border-gray-300 py-4"
+                >
+                  <label
+                    for="subscriberEmail"
+                    class="text-gray-500 font-semibold w-full sm:w-auto"
+                    >Your Email</label
+                  >
+                  <input
+                    type="email"
+                    name="subscriberEmail"
+                    id="subscriberEmail"
+                    class="p-1 border border-gray-200 outline outline-gray-200 w-full"
+                  />
+                </div>
+                <div
+                  class="flex justify-start space-x-8 gap-1 text-sm items-center border-t border-gray-300 pt-4"
+                >
+                  <button
+                    class="bg-green-100 hover:bg-green-200 text-base focus:outline-none text-green-700 rounded-md border border-transparent px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="static-data" data-logo-url="{% static 'image/adope_logo.png' %}"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileId = "{{ profile.id }}";
+            let chatSocket = null;
+            let isAdminConnected = false;
+            let isTyping = false;
+            let typingTimer;
+
+            // Initialize WebSocket connection
+            function initWebSocket() {
+                const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+                const host = window.location.host;
+                const path = `/ws/chat/${profileId}/`;
+                
+                console.log('Connecting to WebSocket:', protocol + host + path);
+                chatSocket = new WebSocket(protocol + host + path);
+
+                chatSocket.onopen = () => {
+                    console.log('WebSocket connection established');
+                    loadMessages();
+                    // Check admin connection status
+                    sendWebSocketMessage({
+                        type: 'connection_check'
+                    });
+                };
+
+                chatSocket.onmessage = (e) => {
+                    console.log('WebSocket message received:', e.data);
+                    const data = JSON.parse(e.data);
+                    handleWebSocketMessage(data);
+                };
+
+                chatSocket.onclose = (e) => {
+                    console.log('WebSocket disconnected:', e);
+                    updateOnlineStatus(false);
+                    // Try to reconnect after 3 seconds
+                    setTimeout(initWebSocket, 3000);
+                };
+
+                chatSocket.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+            }
+
+            // Handle incoming WebSocket messages
+            function handleWebSocketMessage(data) {
+                switch(data.type) {
+                    case 'chat_message':
+                        addMessage(data.message, data.is_admin, data.timestamp);
+                        if (data.is_admin) isAdminConnected = true;
+                        break;
+                    case 'typing':
+                        updateTypingIndicator(data.is_typing, data.is_admin);
+                        break;
+                    case 'status_update':
+                        updateOnlineStatus(data.online);
+                        isAdminConnected = data.online;
+                        break;
+                    case 'connection_status':
+                        updateAdminStatus(data.admin_connected);
+                        isAdminConnected = data.admin_connected;
+                        break;
+                    case 'error':
+                        console.error('Error from server:', data.message);
+                        break;
+                    default:
+                        console.log('Unknown message type:', data.type);
+                }
+            }
+
+            // Send message through WebSocket
+            function sendWebSocketMessage(message) {
+                if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+                    chatSocket.send(JSON.stringify(message));
+                } else {
+                    console.error('WebSocket is not open');
+                }
+            }
+
+            // Update online status display
+            function updateOnlineStatus(online) {
+                const statusElement = document.getElementById('onlineStatus');
+                statusElement.textContent = online ? 'Online' : 'Offline';
+                statusElement.className = online ? 'text-green-500' : 'text-gray-500';
+            }
+
+            // Update admin connection status
+            function updateAdminStatus(connected) {
+                const statusElement = document.getElementById('onlineStatus');
+                statusElement.textContent = connected ? 'Online' : 'Offline';
+                statusElement.className = connected ? 'text-green-500' : 'text-gray-500';
+            }
+
+            // Update typing indicator
+            function updateTypingIndicator(typing, isAdmin) {
+                const typingIndicator = document.getElementById('typingIndicator2');
+                if (typing && isAdmin) {
+                    typingIndicator.classList.remove('hidden');
+                } else {
+                    typingIndicator.classList.add('hidden');
+                }
+            }
+
+            // Add a new message to the chat
+            function addMessage(message, isAdmin, timestamp) {
+                const container = document.getElementById('messagesContainer');
+                const staticUrl = document.getElementById("static-data").dataset.logoUrl;
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex ${isAdmin ? 'justify-start' : 'justify-end'} items-start space-x-2`;
+                
+                if (isAdmin) {
+                    messageDiv.innerHTML = `
+                        <img src="${staticUrl}" class="w-10 h-10 rounded-full object-cover" alt="">
+                        <div class="message-admin px-4 py-2 max-w-xs md:max-w-md">
+                            <p>${message}</p>
+                            <p class="text-xs opacity-70 mt-1">${formatTime(timestamp)}</p>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-user px-4 py-2 max-w-xs md:max-w-lg">
+                            <p>${message}</p>
+                            <p class="text-xs opacity-70 mt-1">${formatTime(timestamp)}</p>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(messageDiv);
+                container.scrollTop = container.scrollHeight;
+            }
+
+            // Format timestamp for display
+            function formatTime(timestamp) {
+                try {
+                    return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } catch (e) {
+                    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+            }
+
+            // Load previous messages from server
+            function loadMessages() {
+                fetch(`/chat/api/chat/${profileId}/messages/`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to load messages');
+                        return response.json();
+                    })
+                    .then(messages => {
+                        const container = document.getElementById('messagesContainer');
+                        container.innerHTML = '';
+                        
+                        messages.forEach(message => {
+                            addMessage(message.content, message.is_admin, message.timestamp);
+                            if (message.is_admin) isAdminConnected = true;
+                        });
+                        
+                        // If no admin messages, check connection
+                        if (!messages.some(m => m.is_admin)) {
+                            sendWebSocketMessage({
+                                type: 'connection_check'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading messages:', error);
+                    });
+            }
+
+            // Send a new chat message
+            function sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value.trim();
+                
+                if (message) {
+                    sendWebSocketMessage({
+                        type: 'chat_message',
+                        message: message,
+                        is_admin: false
+                    });
+                    input.value = '';
+                    
+                    // Clear typing indicator
+                    sendTyping(false);
+                    
+                    // If admin isn't connected yet, show a notice
+                    if (!isAdminConnected) {
+                        setTimeout(() => {
+                            if (!isAdminConnected) {
+                                addMessage("An admin will respond to you shortly. Thank you for your patience.", true, new Date().toISOString());
+                            }
+                        }, 3000);
+                    }
+                }
+            }
+
+            // Send typing status
+            function sendTyping(typing) {
+                if (isTyping !== typing) {
+                    isTyping = typing;
+                    if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+                        chatSocket.send(JSON.stringify({
+                            type: 'typing',
+                            is_typing: typing,
+                            is_admin: false
+                        }));
+                    }
+
+                    // 👇 Directly toggle typing indicator for *your own typing*
+                   const typingIndicator = document.getElementById('typingIndicator2');
+                  if (data.is_typing && !data.is_admin) {   // show only when PROFILE (not admin) is typing
+                      typingIndicator.classList.remove('hidden');
+                  } else {
+                      typingIndicator.classList.add('hidden');
+                  }
+                }
+                
+                clearTimeout(typingTimer);
+                if (typing) {
+                    typingTimer = setTimeout(() => sendTyping(false), 2000);
+                }
+            }
+
+            // Get CSRF token from cookies
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            // Event listeners
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
+            
+            document.getElementById('messageInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            document.getElementById('messageInput').addEventListener('input', () => {
+                const message = document.getElementById('messageInput').value.trim();
+                sendTyping(message.length > 0);
+            });
+
+            // Mobile menu toggle
+            document.getElementById('menuButton').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.toggle('hidden');
+            });
+
+            // Modal toggle
+            document.getElementById('openModalBtn').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.remove('hidden');
+            });
+
+            document.getElementById('mobileOpenModalBtn').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.remove('hidden');
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+
+            document.getElementById('closeModalBtn').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.add('hidden');
+            });
+
+            // Tab switching
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabName = button.getAttribute('data-tab');
+                    document.querySelector(`.tab-content.${tabName}`).classList.add('active');
+                });
+            });
+
+            // Initialize WebSocket connection
+            initWebSocket();
+        });
+    </script>
+</body>
+</html>
