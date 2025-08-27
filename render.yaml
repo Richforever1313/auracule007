@@ -1,9 +1,9 @@
 services:
   - type: web
     name: core
-    env: python
     buildCommand: "./build.sh"
-    startCommand: "daphne -b 0.0.0.0 -p 8000 core.asgi:application"
+    env: python
+    startCommand: "gunicorn core.wsgi:application"
     disk:
       name: media
       mountPath: /app/media
