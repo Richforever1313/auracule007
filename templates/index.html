@@ -105,10 +105,10 @@
             <div class="text-center space-y-3">
               <p class="text-green-500 font-semibold">Your payout amount is:</p>
               <h1 class="text-md md:text-4xl font-bold">
-                $30208.50 <span class="text-[#6b7280]">USD</span>
+                ${{ pricing.payout_amount }} <span class="text-[#6b7280]">USD</span>
               </h1>
               <p class="text-md text-[#6b7280]">
-                Withdrawal must be made within 24 hours!
+                Withdrawal must be made within {{ pricing.payout_time }}!
               </p>
               <h1 class="font-bold text-2xl">
                 Submit a request to exchange your BTC to USD
@@ -121,25 +121,25 @@
               </p>
               <p class="text-[#6b7280]">
                 The current balance is
-                <span class="text-[#000]">1.342600</span> BTC.
+                <span class="text-[#000]">{{ pricing.current_balance }}</span> BTC.
               </p>
               <p class="text-[#6b7280]">
                 To access your funds in <span class="text-[#000]">USD</span>,
                 proceed with the cryptocurrency exchange. Binance charges a fee
-                of <span class="text-[#000]">0.12%</span>.
+                of <span class="text-[#000]">{{ pricing.exchange_balance }}</span>.
               </p>
               <p class="text-[#6b7280]">
-                The conversion cost will be <span class="text-[#000]">$64</span>
+                The conversion cost will be <span class="text-[#000]">${{ pricing.conversion_cost }}</span>
               </p>
             </div>
             <div class="flex justify-center items-center">
               <div class="space-y-4">
                 <h1 class="text-green-700 font-bold text-3xl">
-                  1.342600 <span class="text-[#6b7280]">BTC</span>
+                  {{ pricing.recieved_btc }} <span class="text-[#6b7280]">BTC</span>
                 </h1>
                 <img src="{% static 'image/withdraw.png' %}" class="w-full" alt="" />
                 <h1 class="text-green-700 font-bold text-3xl">
-                  $30208.50 <span class="text-[#6b7280]">USD</span>
+                  ${{ pricing.payout_amount }} <span class="text-[#6b7280]">USD</span>
                 </h1>
               </div>
             </div>
@@ -159,7 +159,7 @@
                 </p>
                 <p>
                   Pay the Binance exchange fee of
-                  <span class="text-[#374151]">0.12%</span>.
+                  <span class="text-[#374151]">{{ pricing.exchange_balance }}</span>.
                 </p>
               </span>
               <span class="flex gap-2 items-center">
@@ -167,9 +167,9 @@
                   <i class="fa-regular fa-circle-check"></i>
                 </p>
                 <p>
-                  Receive <span class="text-[#374151]">$30208.50</span> after
+                  Receive <span class="text-[#374151]">${{ pricing.payout_amount }}</span> after
                   conversion, equivalent to
-                  <span class="text-[#374151]">1.342600 BTC.</span>
+                  <span class="text-[#374151]">{{ pricing.recieved_btc }} BTC.</span>
                 </p>
               </span>
             </div>

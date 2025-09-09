@@ -2,7 +2,7 @@
 from django.urls import reverse
 from django.utils.html import format_html
 from django.contrib import admin
-from .models import Profile, Wallet  # Import your Profile model
+from .models import Profile, Wallet, Pricing  # Import your Profile model
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class ProfileAdmin(admin.ModelAdmin):
     chat_button.short_description = 'Chat'
     chat_button.allow_tags = True
 admin.site.register(Wallet)
+admin.site.register(Pricing)

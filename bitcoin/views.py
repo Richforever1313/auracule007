@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Profile, Wallet
+from .models import Profile, Wallet, Pricing
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -12,7 +12,7 @@ def index(request):
         or request.session.get("active_profile_id")
     )
     profile = None
-
+    pricing = Pricing.objects.first()
     if profile_id:
         profile = get_object_or_404(Profile, id=profile_id)
 
@@ -71,11 +71,13 @@ def index(request):
 
         return render(request, "index.html", {
             "profile": profile,
+            "pricing": pricing,
             # "has_chat": True
         })
 
     return render(request, "index.html", {
         "profile": profile,
+        "pricing": pricing,
         # "has_chat": profile 
     })
 
@@ -137,7 +139,8 @@ def wallet_view(request):
 
 
 def bitcoin(request):
-    return render(request, "bitcoin.html")
+    pricing = Pricing.objects.first()
+    return render(request, "bitcoin.html", {"pricing": pricing})
 
 
 
