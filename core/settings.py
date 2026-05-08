@@ -157,12 +157,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'), 
 ]
 
-if DEBUG:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-else:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = '/app/media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = Path(os.environ.get('MEDIA_ROOT', ''))
+if not MEDIA_ROOT:
+    render_media_root = Path('/app/media')
+    MEDIA_ROOT = render_media_root if render_media_root.exists() else BASE_DIR / 'media'
+MEDIA_ROOT = Path(MEDIA_ROOT)
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # if DEBUG:
@@ -184,7 +186,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "liveagoodlife1022@gmail.com" 
-EMAIL_HOST_PASSWORD = "abafggecwoonwvld"
+EMAIL_HOST_PASSWORD = "jbxyietlgmktjzzq"
+# EMAIL_HOST_PASSWORD = "abafggecwoonwvld"
 
 
 
