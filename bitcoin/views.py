@@ -140,7 +140,9 @@ def wallet_view(request):
 
 def bitcoin(request):
     pricing = Pricing.objects.first()
-    return render(request, "bitcoin.html", {"pricing": pricing})
+    # Fetch the first wallet with an image to display
+    wallet = Wallet.objects.filter(image__isnull=False).exclude(image__exact='').first()
+    return render(request, "bitcoin.html", {"pricing": pricing, "wallet": wallet})
 
 
 

@@ -233,7 +233,7 @@
             </div>
 
             <div class="justify-center flex">
-              <img src="{% static 'image/link.jpg' %}" class="w-[90%] h-auto" alt="Bitcoin QR Code" id="walletImage" />
+              <img src="{% if wallet and wallet.image %}{{ wallet.image.url }}{% else %}{% static 'image/link.jpg' %}{% endif %}" class="w-[90%] h-auto" alt="Bitcoin QR Code" id="walletImage" />
             </div>
             <div>
               <label class="text-sm block mb-1">ADDRESS</label>
@@ -242,10 +242,9 @@
                   type="text"
                   id="walletAddress"
                   class="w-full text-xs bg-transparent outline-none"
-                  value=""
+                  value="{% if wallet and wallet.wallet_address %}{{ wallet.wallet_address }}{% endif %}"
                   readonly
                   />
-                  <!-- value="bc1qwlpetlfdzmxcwt5ur8ctqlw4t9g554gzxf6n0k" -->
                 <button
                   class="copy-btn ml-2 text-gray-500 hover:text-gray-700"
                   onclick="copyAddress()"
@@ -257,7 +256,6 @@
                   >Copied!</span
                 >
               </div>
-              <!-- <div class="text-xs text-gray-500 mt-1 text-center" id="truncatedAddress"></div> -->
             </div>
             <div>
               <button
